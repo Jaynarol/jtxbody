@@ -1,24 +1,23 @@
 import React from 'react'
-import './index.css'
+import { Layout } from 'antd'
+import { Logo, MainContent, MainLayout } from './styled'
+import DateInput from '../DateInput'
 
-function Index() {
+function App() {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MainLayout>
+      <Layout>
+        <MainContent>
+          <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>Should be a Dashboard</div>
+        </MainContent>
+      </Layout>
+      <Layout.Sider width={320} >
+        <Logo />
+        <DateInput />
+      </Layout.Sider>
+    </MainLayout>
   )
 }
 
-export default Index
+export default App
