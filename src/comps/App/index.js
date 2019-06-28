@@ -1,9 +1,9 @@
 import React from 'react'
 import { Layout } from 'antd'
 import { Logo, MainContent, MainLayout } from './styled'
-import DateInput from '../DateInput'
+import PanelDate from '../PanelDate'
 
-function App() {
+const App = () => {
 
   return (
     <MainLayout>
@@ -14,7 +14,7 @@ function App() {
       </Layout>
       <Layout.Sider width={320} >
         <Logo />
-        <DateInput />
+        <PanelDate />
       </Layout.Sider>
     </MainLayout>
   )
