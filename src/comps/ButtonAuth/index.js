@@ -1,44 +1,47 @@
-import React, { Fragment } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { pick } from 'lodash'
 import { GoogleLogin } from 'react-google-login'
 import { Button } from 'antd'
-import { googleConf } from '../config'
+import { gconf } from '../../gapi'
 
 
-const ButtonAuth = ({ loading, isLogin, checkLogin }) => {
+const ButtonAuth = ({ isLogin, refetchAuth }) => {
+
+  const [loading, setLoading] = useState(false)
 
   const loginSuccess = async data => {
     localStorage.setItem('auth', JSON.stringify(pick(data, ['profileObj', 'tokenObj'])))
-    await checkLogin()
+    await refetchAuth()
+    setLoading(false)
   }
 
-  return <Fragment>
+  return <>
     {
       isLogin ?
-        <span>test</span>
+        <Button loading={loading} icon="save">Save</Button>
         : <GoogleLogin
-          clientId={googleConf.client_id}
+          clientId={gconf.clientId}
           buttonText="Login"
+          onRequest={() => setLoading(true)}
           onSuccess={loginSuccess}
-          scope={googleConf.scope}
+          onFailure={() => setLoading(false)}
+          scope={gconf.scope}
           cookiePolicy={'single_host_origin'}
           render={renderProps => (
             <Button onClick={renderProps.onClick} loading={loading} icon="google">Login</Button>
           )}
         />
     }
-  </Fragment>
+  </>
 }
 
 ButtonAuth.propTypes = {
-  loading: PropTypes.bool,
   isLogin: PropTypes.bool,
-  checkLogin: PropTypes.func.isRequired
+  refetchAuth: PropTypes.func.isRequired
 }
 
 ButtonAuth.defaultProps = {
-  loading: true,
   isLogin: false
 }
 

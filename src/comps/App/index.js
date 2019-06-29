@@ -1,23 +1,40 @@
 import React from 'react'
-import { Layout } from 'antd'
-import { Logo, MainContent, MainLayout } from './styled'
-import PanelDate from '../PanelDate'
+import { Spin } from 'antd'
+import Layout from '../Layout'
+import './style.css'
+import { fetchData, fetchTokenInfo } from '../../gapi'
+import { notiError } from '../../libs'
 
-const App = () => {
+class App extends React.Component {
+  state = {
+    spinning: true,
+    isLogin: false,
+    data: []
+  }
 
-  return (
-    <MainLayout>
-      <Layout>
-        <MainContent>
-          <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>Should be a Dashboard</div>
-        </MainContent>
-      </Layout>
-      <Layout.Sider width={320} >
-        <Logo />
-        <PanelDate />
-      </Layout.Sider>
-    </MainLayout>
-  )
+  refetchAuth = async () => {
+    const { data: { expires_in = 0 } = {} }  = await fetchTokenInfo()
+    this.setState({ isLogin: expires_in > 0 })
+  }
+
+  refetchData = async () => {
+    const { data = [], isError, errMsg } = await fetchData(this.state.isLogin)
+    if(isError){
+      notiError('Fetch Data Error', errMsg)
+    }
+    this.setState({ data, spinning: false })
+  }
+
+  componentDidMount = async () => {
+    await this.refetchAuth()
+    await this.refetchData()
+  }
+
+  render() {
+    return <Spin tip="Fetching Data..." spinning={this.state.spinning}>
+      <Layout refetchAuth={this.refetchAuth} refetchData={this.refetchData} {...this.state} />
+    </Spin>
+  }
 }
 
 export default App

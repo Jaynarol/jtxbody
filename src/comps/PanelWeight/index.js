@@ -1,27 +1,13 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import { capitalize } from 'lodash'
 import { ColLabel, ColSlider, RowPanel, RowSave } from './styled'
 import { Col, InputNumber, Slider, Switch } from 'antd'
 import ButtonAuth from '../ButtonAuth'
-import { gapiIsLogin } from '../../libs'
 
-const PanelWeight = () => {
+const PanelWeight = ({ isLogin, ...props }) => {
 
-  const [loading, setLoading] = useState(true)
-  const [isLogin, setIsLogin] = useState(false)
-
-  const checkLogin = async () => {
-    setLoading(true)
-    const isSignedin = await gapiIsLogin()
-    setIsLogin(isSignedin)
-    setLoading(false)
-  }
-
-  useEffect(() => {
-    checkLogin()
-  }, [])
-
-  const data = {
+  const dataDate = {
     weight: useState(0),
     exercise: useState(0),
     measure: useState(false),
@@ -31,22 +17,22 @@ const PanelWeight = () => {
     hip: useState(0),
     sleeve: useState(0)
   }
-  const setValue = state => value => data[state][1](value)
-  const getValue = state => data[state][0]
+  const setValue = state => value => isLogin && dataDate[state][1](value)
+  const getValue = state => dataDate[state][0]
 
   return (
-    <Fragment>
+    <>
 
       <RowPanel>
         <ColLabel>Weight:</ColLabel>
         <ColSlider>
-          <Slider min={0} max={120} step={0.1} onChange={setValue('weight')} value={getValue('weight')} disabled={!isLogin} />
+          <Slider min={0} max={120} step={0.1} onChange={setValue('weight')} value={getValue('weight')} />
         </ColSlider>
         <Col span={8}>
           <InputNumber
             onChange={setValue('weight')}
             formatter={n => `${n} kg`}
-            parser={n => n.replace(/[^0-9.]/g, '')} disabled={!isLogin}
+            parser={n => n.replace(/[^0-9.]/g, '')}
             min={0} max={120} step={0.1} value={getValue('weight')}
           />
         </Col>
@@ -55,13 +41,13 @@ const PanelWeight = () => {
       <RowPanel>
         <ColLabel>Exercise:</ColLabel>
         <ColSlider>
-          <Slider min={0} max={120} step={5} onChange={setValue('exercise')} value={getValue('exercise')} disabled={!isLogin}  />
+          <Slider min={0} max={120} step={5} onChange={setValue('exercise')} value={getValue('exercise')}  />
         </ColSlider>
         <Col span={8}>
           <InputNumber
             onChange={setValue('exercise')}
             formatter={n => `${n} mins`}
-            parser={n => n.replace(/[^0-9.]/g, '')} disabled={!isLogin}
+            parser={n => n.replace(/[^0-9.]/g, '')}
             min={0} max={120} step={5} value={getValue('exercise')}
           />
         </Col>
@@ -75,7 +61,6 @@ const PanelWeight = () => {
             unCheckedChildren="No"
             checked={getValue('measure')}
             onChange={setValue('measure')}
-            disabled={!isLogin}
           />
         </Col>
       </RowPanel>
@@ -86,13 +71,13 @@ const PanelWeight = () => {
           <RowPanel key={v}>
             <ColLabel>{capitalize(v)}:</ColLabel>
             <ColSlider>
-              <Slider min={0} max={60} step={0.1} onChange={setValue(v)} value={getValue(v)} disabled={!isLogin}  />
+              <Slider min={0} max={60} step={0.1} onChange={setValue(v)} value={getValue(v)}  />
             </ColSlider>
             <Col span={8}>
               <InputNumber
                 onChange={setValue(v)}
                 formatter={n => `${n}"`}
-                parser={n => n.replace(/[^0-9.]/g, '')} disabled={!isLogin}
+                parser={n => n.replace(/[^0-9.]/g, '')}
                 min={0} max={60} step={0.1} value={getValue(v)}
               />
             </Col>
@@ -103,11 +88,19 @@ const PanelWeight = () => {
       <RowSave>
         <ColLabel />
         <Col span={16}>
-          <ButtonAuth loading={loading} isLogin={isLogin} checkLogin={checkLogin} />
+          <ButtonAuth isLogin={isLogin} {...props} />
         </Col>
       </RowSave>
-    </Fragment>
+    </>
   )
+}
+
+PanelWeight.propTypes = {
+  isLogin: PropTypes.bool
+}
+
+PanelWeight.defaultProps = {
+  isLogin: false
 }
 
 export default PanelWeight
