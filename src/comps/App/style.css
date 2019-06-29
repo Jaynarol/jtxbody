@@ -1,1 +1,9 @@
-@import '../../../node_modules/antd/dist/antd.css';
+@import '~antd/dist/antd.css';
+
+.ant-fullcalendar-content .ant-badge-status-text {
+  margin: 0;
+}
+
+.ant-fullcalendar-content .ant-badge-status{
+  padding: 0 3px;
+}

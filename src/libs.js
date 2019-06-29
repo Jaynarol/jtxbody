@@ -1,10 +1,10 @@
 import moment from 'moment'
-import { get, toNumber, zipObject } from 'lodash'
+import { find, get, toNumber, zipObject } from 'lodash'
 import { Modal } from 'antd'
 
 export const convertData = row => ({
-  date: zipObject(['year','month','day'],row.date.split('-').map(toNumber)),
-  moment: moment(row.date, "YYYY-MM-DD"),
+  date: zipObject(['year','month','day'], row.date.split('-').map(toNumber)),
+  dmoment: moment(row.date, "YYYY-MM-DD"),
   weight: +row.weight,
   exercise: +row.exercise,
   measure: row.measure === "TRUE",
@@ -30,3 +30,7 @@ export const output = resp => {
   }
   return { data: resp, isError: false }
 }
+
+export const findSameDate = (
+  (data, date) => find(data, ({ dmoment }) => dmoment.isSame(date, 'day'))
+)

@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { capitalize } from 'lodash'
+import { each, capitalize, keys } from 'lodash'
 import { ColLabel, ColSlider, RowPanel, RowSave } from './styled'
 import { Col, InputNumber, Slider, Switch } from 'antd'
 import ButtonAuth from '../ButtonAuth'
+import { findSameDate } from '../../libs'
 
-const PanelWeight = ({ isLogin, ...props }) => {
-
-  const dataDate = {
+const PanelWeight = props => {
+  const { isLogin, selectedDate, data } = props
+  const form = {
     weight: useState(0),
     exercise: useState(0),
     measure: useState(false),
@@ -17,12 +18,20 @@ const PanelWeight = ({ isLogin, ...props }) => {
     hip: useState(0),
     sleeve: useState(0)
   }
-  const setValue = state => value => isLogin && dataDate[state][1](value)
-  const getValue = state => dataDate[state][0]
+  const setValue = (label, bypass = false) => value => (isLogin || bypass) && form[label][1](value)
+  const getValue = label => form[label][0]
+
+  useEffect(() => {
+    const formValue = findSameDate(data, selectedDate)
+    each(keys(form), label => setValue(label, true)(label === 'measure' ? false : 0))
+    if(formValue){
+      each(keys(form), label => setValue(label, true)(formValue[label]))
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate, data])
 
   return (
     <>
-
       <RowPanel>
         <ColLabel>Weight:</ColLabel>
         <ColSlider>
@@ -96,7 +105,9 @@ const PanelWeight = ({ isLogin, ...props }) => {
 }
 
 PanelWeight.propTypes = {
-  isLogin: PropTypes.bool
+  isLogin: PropTypes.bool,
+  selectedDate: PropTypes.objectOf(PropTypes.any).isRequired,
+  data: PropTypes.arrayOf(PropTypes.any).isRequired
 }
 
 PanelWeight.defaultProps = {

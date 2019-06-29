@@ -1,10 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Layout as AntLayout } from 'antd'
-import { Logo, MainContent, MainLayout, Panel, DividerTop } from './styled'
+import { Logo, MainContent, MainLayout, Panel, DividerTop, MainSider } from './styled'
 import PanelDate from '../PanelDate'
 import PanelWeight from '../PanelWeight'
 
 const Layout = props => {
+  const { selectedDate } = props
 
   return (
     <MainLayout>
@@ -13,16 +15,25 @@ const Layout = props => {
           <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>Should be a Dashboard</div>
         </MainContent>
       </AntLayout>
-      <AntLayout.Sider width={320} >
+      <MainSider>
         <Logo />
         <Panel>
-          <PanelDate />
-          <DividerTop />
+          <PanelDate {...props} />
+          <DividerTop>{selectedDate.format('DD MMMM YYYY')}</DividerTop>
           <PanelWeight {...props} />
         </Panel>
-      </AntLayout.Sider>
+      </MainSider>
     </MainLayout>
   )
+}
+
+Layout.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.any),
+  selectedDate: PropTypes.objectOf(PropTypes.any).isRequired
+}
+
+Layout.defaultProps = {
+  data: []
 }
 
 export default Layout

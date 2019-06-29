@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Divider, Layout } from 'antd'
 
-const { Content } = Layout
+const { Content, Sider } = Layout
 
 export const Logo = styled.div`
   height: 32px;
@@ -10,6 +10,12 @@ export const Logo = styled.div`
 `
 
 export const MainLayout = styled(Layout)`
+  min-height: 100vh;
+`
+
+export const MainSider = styled(Sider).attrs(() => ({
+  width: 320
+}))`
   min-height: 100vh;
 `
 
@@ -25,6 +31,8 @@ export const Panel = styled.div`
   background-color: #EEE;
 `
 
-export const DividerTop = styled(Divider)`
-  margin: 3px 0 10px;
+export const DividerTop = styled(Divider).attrs(() => ({
+  orientation: 'center'
+}))`
+  margin: 20px 0 10px!important;
 `
