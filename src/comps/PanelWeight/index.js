@@ -1,6 +1,7 @@
+/* eslint-disable newline-per-chained-call */
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { each, capitalize, keys } from 'lodash'
+import _, { each, capitalize, keys } from 'lodash'
 import { ColLabel, ColSlider, RowPanel, RowSave } from './styled'
 import { Col, InputNumber, Slider, Switch } from 'antd'
 import ButtonAuth from '../ButtonAuth'
@@ -20,6 +21,7 @@ const PanelWeight = props => {
   }
   const setValue = (label, bypass = false) => value => (isLogin || bypass) && form[label][1](value)
   const getValue = label => form[label][0]
+  const getForm = () => _(form).keys().chain().map(label => ([label, getValue(label)])).fromPairs().value()
 
   useEffect(() => {
     const formValue = findSameDate(data, selectedDate)
@@ -97,7 +99,7 @@ const PanelWeight = props => {
       <RowSave>
         <ColLabel />
         <Col span={16}>
-          <ButtonAuth isLogin={isLogin} {...props} />
+          <ButtonAuth form={getForm()} isLogin={isLogin} {...props} />
         </Col>
       </RowSave>
     </>

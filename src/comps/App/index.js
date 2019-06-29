@@ -2,7 +2,6 @@ import React from 'react'
 import moment from 'moment'
 import { Spin } from 'antd'
 import { fetchData, fetchTokenInfo } from '../../gapi'
-import { notiError } from '../../libs'
 import Layout from '../Layout'
 import './style.css'
 
@@ -20,10 +19,7 @@ class App extends React.Component {
   }
 
   refetchData = async () => {
-    const { data = [], isError, errMsg } = await fetchData(this.state.isLogin)
-    if(isError){
-      notiError('Fetch Data Error', errMsg)
-    }
+    const { data = [] } = await fetchData(this.state.isLogin)
     this.setState({ data })
   }
 

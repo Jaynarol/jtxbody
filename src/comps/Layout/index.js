@@ -16,7 +16,7 @@ const Layout = props => {
         </MainContent>
       </AntLayout>
       <MainSider>
-        <Logo />
+        <Logo>JTxBody</Logo>
         <Panel>
           <PanelDate {...props} />
           <DividerTop>{selectedDate.format('DD MMMM YYYY')}</DividerTop>
