@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { zipObject, pick, values } from 'lodash'
-import { convertData, findSameDate, getAccessToken, output, silentOutput } from './libs'
+import { pick, values } from 'lodash'
+import { cleanAndPairData, convertData, findSameDate, getAccessToken, output, silentOutput } from './libs'
 
 export const gconf = {
   projectName: 'JTxBody',
@@ -38,7 +38,7 @@ const fetchDataWithAuth = () => (
     .then(({ data }) => data)
     .then(({ values: [header = [], ...rows] = [] }) =>(
       rows
-        .map((row, index) => ({ rowId: index+2, ...zipObject(header, row)}))
+        .map(cleanAndPairData(header))
         .map(convertData)
     ))
     .then(output).catch(output)
@@ -51,7 +51,8 @@ const fetchDataWithPublic = () => (
       const [headerRaw, ...dataRaw] = csv.split('\n')
       const header = headerRaw.trim().split(',')
       return dataRaw
-        .map(raw => zipObject(header, raw.trim().split(',')))
+        .map(raw => raw.trim().split(','))
+        .map(cleanAndPairData(header))
         .map(convertData)
     })
     .then(output).catch(output)

@@ -15,9 +15,9 @@ const ButtonAuth = ({ refetchAuth, refetchData, form, data, selectedDate, isLogi
     if(givenName === gconf.givenName){
       localStorage.setItem('auth', JSON.stringify(pick(resp, ['profileObj', 'tokenObj'])))
       await refetchAuth()
-      message.success(`Welcome back ${givenName}.`)
+      message.success(`Welcome back ${gconf.givenName}.`)
     }else{
-      Modal.error({ title: 'Permission Denied', content: `I'm glad to hear that you are interested, But This area for ${givenName} only.`})
+      Modal.error({ title: 'Permission Denied', content: `I'm glad to hear that you are interested, But This area for ${gconf.givenName} only.`})
     }
     setLoading(false)
   }

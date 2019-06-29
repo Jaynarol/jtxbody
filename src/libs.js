@@ -37,3 +37,7 @@ export const output = returnOutput(false)
 export const findSameDate = (
   (data, date) => find(data, ({ dmoment }) => dmoment.isSame(date, 'day'))
 )
+
+export const cleanAndPairData = header => (row, index) => (
+  { rowId: index+2, ...zipObject(header, row)}
+)
