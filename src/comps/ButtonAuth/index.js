@@ -12,21 +12,26 @@ const ButtonAuth = ({ refetchAuth, refetchData, form, data, selectedDate, isLogi
 
   const loginSuccess = async resp => {
     const givenName = get(resp, 'profileObj.givenName')
-    if(givenName === gconf.sheetOwner){
+    if(givenName === gconf.givenName){
       localStorage.setItem('auth', JSON.stringify(pick(resp, ['profileObj', 'tokenObj'])))
       await refetchAuth()
-      message.success(`Welcome back ${gconf.sheetOwner}.`)
+      message.success(`Welcome back ${givenName}.`)
     }else{
-      Modal.error({ title: 'Permission Denied', content: `I'm glad to hear that you are interested, But This area for ${gconf.sheetOwner} only.`})
+      Modal.error({ title: 'Permission Denied', content: `I'm glad to hear that you are interested, But This area for ${givenName} only.`})
     }
     setLoading(false)
   }
 
   const saveData = async () => {
     setLoading(true)
-    await updateOrCreateRow(data, form, selectedDate)
-    await refetchData()
-    message.success('data successfully saved.')
+    const { isError } = await updateOrCreateRow(data, form, selectedDate)
+    if(isError){
+      await refetchAuth()
+      message.info('Session timeout.')
+    }else{
+      await refetchData()
+      message.success('Data successfully saved.')
+    }
     setLoading(false)
   }
 
