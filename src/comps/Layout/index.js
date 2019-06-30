@@ -4,7 +4,9 @@ import { Button, Col, Layout as AntLayout, Row } from 'antd'
 import { Logo, MainContent, MainLayout, Panel, DividerTop, MainSider } from './styled'
 import PanelDate from '../PanelDate'
 import PanelWeight from '../PanelWeight'
-import { gconf } from '../../gapi'
+import Dashboard from '../Dashboard'
+import { gconf, project } from '../../config'
+import Graph from '../Graph'
 
 const Layout = props => {
   const { selectedDate } = props
@@ -13,17 +15,18 @@ const Layout = props => {
     <MainLayout>
       <AntLayout>
         <MainContent>
-          <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>Should be a Dashboard</div>
+          <Dashboard {...props} />
+          <Graph {...props} />
         </MainContent>
       </AntLayout>
       <MainSider>
         <Logo>
           <Row type="flex" justify="space-between" >
-            <Col span={16}>{gconf.projectName}</Col>
+            <Col span={16}>{project.projectName}</Col>
             <Col span={8}>
               <Button type="link" icon="file" href={`https://docs.google.com/spreadsheets/d/${gconf.sheetID}`} target="_blank" />
-              <Button type="link" icon="facebook" href={gconf.facebookLink} target="_blank" />
-              <Button type="link" icon="github" href={gconf.githubRepo} target="_blank" />
+              <Button type="link" icon="facebook" href={project.facebookLink} target="_blank" />
+              <Button type="link" icon="github" href={project.githubRepo} target="_blank" />
             </Col>
           </Row>
         </Logo>

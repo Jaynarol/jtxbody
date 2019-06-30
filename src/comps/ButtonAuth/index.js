@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { pick, get } from 'lodash'
 import { GoogleLogin } from 'react-google-login'
 import { Button, Modal, message } from 'antd'
-import { gconf, updateOrCreateRow } from '../../gapi'
+import { updateOrCreateRow } from '../../gapi'
+import { gconf, project } from '../../config'
 
 
 const ButtonAuth = ({ refetchAuth, refetchData, form, data, selectedDate, isLogin }) => {
@@ -12,12 +13,12 @@ const ButtonAuth = ({ refetchAuth, refetchData, form, data, selectedDate, isLogi
 
   const loginSuccess = async resp => {
     const givenName = get(resp, 'profileObj.givenName')
-    if(givenName === gconf.givenName){
+    if(givenName === project.givenName){
       localStorage.setItem('auth', JSON.stringify(pick(resp, ['profileObj', 'tokenObj'])))
       await refetchAuth()
-      message.success(`Welcome back ${gconf.givenName}.`)
+      message.success(`Welcome back ${project.givenName}.`)
     }else{
-      Modal.error({ title: 'Permission Denied', content: `I'm glad to hear that you are interested, But This area for ${gconf.givenName} only.`})
+      Modal.error({ title: 'Permission Denied', content: `I'm glad to hear that you are interested, But This area for ${project.givenName} only.`})
     }
     setLoading(false)
   }

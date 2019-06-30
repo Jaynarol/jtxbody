@@ -26,7 +26,7 @@ const PanelDate = ({ selectDate, selectedDate, data }) => {
   return (
     <Calendar
       fullscreen={false}
-      defaultValue={selectedDate}
+      value={selectedDate}
       onSelect={selectDate}
       dateCellRender={dateCellRender(data)}
     />

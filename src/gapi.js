@@ -1,16 +1,7 @@
 import axios from 'axios'
-import { pick, values } from 'lodash'
+import { pick, sortBy, values } from 'lodash'
 import { cleanAndPairData, convertData, findSameDate, getAccessToken, output, silentOutput } from './libs'
-
-export const gconf = {
-  projectName: 'JTxBody',
-  clientId: '868583526084-jg9plqb23mjf393qdegg1aa0gq0tf8j4.apps.googleusercontent.com',
-  scope: 'https://www.googleapis.com/auth/spreadsheets',
-  sheetID: '1btCR4YSDxAElxE_IdhhuEcwyr5vFDIcV48Il37NiQLQ',
-  givenName: 'Jaynarol',
-  githubRepo: 'https://github.com/Jaynarol/jtxbody',
-  facebookLink: 'https://fb.com/akkaradech.sr'
-}
+import { gconf } from './config'
 
 const gapi = {
   tokenInfo: 'https://www.googleapis.com/oauth2/v3/tokeninfo',
@@ -58,11 +49,16 @@ const fetchDataWithPublic = () => (
     .then(output).catch(output)
 )
 
-export const fetchData = isLogin => (
-  isLogin
-    ? fetchDataWithAuth()
-    : fetchDataWithPublic()
-)
+export const fetchData = async isLogin => {
+  const resp = isLogin
+    ? await fetchDataWithAuth()
+    : await fetchDataWithPublic()
+
+  const data = sortBy(resp.data, ['timestamp'])
+    .filter(({ weight = 0 }) => weight > 0)
+
+  return { ...resp, data }
+}
 
 export const updateOrCreateRow = (data, form, selectedDate) => {
   const { rowId } = findSameDate(data, selectedDate) || { rowId: data.length + 2 }

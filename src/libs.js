@@ -1,11 +1,15 @@
 import moment from 'moment'
-import { find, get, toNumber, zipObject } from 'lodash'
+import { find, get, zipObject } from 'lodash'
 import { Modal } from 'antd'
+
+export const convertDate = date => (
+  moment(date, "YYYY-MM-DD")
+)
 
 export const convertData = row => ({
   ...row,
-  date: zipObject(['year','month','day'], row.date.split('-').map(toNumber)),
-  dmoment: moment(row.date, "YYYY-MM-DD"),
+  timestamp: convertDate(row.date).unix(),
+  dmoment: convertDate(row.date),
   weight: +(row.weight || 0),
   exercise: +(row.exercise || 0),
   measure: row.measure === "TRUE",
