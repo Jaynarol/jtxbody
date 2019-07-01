@@ -4,7 +4,7 @@ import { Card } from 'antd'
 import { isFinite, round } from 'lodash'
 import { Area, Bar, CartesianGrid, ComposedChart, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { convertDate } from '../../libs'
-import { AxisTickRotate, MeasureDot } from './childcomps'
+import { AxisTickRotate, MeasureDot } from './child'
 
 const domain = type => n => (
   isFinite(n) ? round(n, -1) + (type === 'min' ? -10 : 10) : 0

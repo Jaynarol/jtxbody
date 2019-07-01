@@ -55,7 +55,6 @@ export const fetchData = async isLogin => {
     : await fetchDataWithPublic()
 
   const data = sortBy(resp.data, ['timestamp'])
-    .filter(({ weight = 0 }) => weight > 0)
 
   return { ...resp, data }
 }

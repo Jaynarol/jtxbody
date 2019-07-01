@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Button, Col, Layout as AntLayout, Row } from 'antd'
+import { omit } from 'lodash'
 import { Logo, MainContent, MainLayout, Panel, DividerTop, MainSider } from './styled'
 import PanelDate from '../PanelDate'
 import PanelWeight from '../PanelWeight'
@@ -9,14 +10,16 @@ import { gconf, project } from '../../config'
 import Graph from '../Graph'
 
 const Layout = props => {
-  const { selectedDate } = props
+  const { selectedDate, data } = props
+  const propsWithoutData = omit(props, ['data'])
+  const cleanData = data.filter(({ weight = 0 }) => weight > 0)
 
   return (
     <MainLayout>
       <AntLayout>
         <MainContent>
-          <Dashboard {...props} />
-          <Graph {...props} />
+          <Dashboard data={cleanData} {...propsWithoutData} />
+          <Graph data={cleanData} {...propsWithoutData} />
         </MainContent>
       </AntLayout>
       <MainSider>

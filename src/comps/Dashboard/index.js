@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { Card, Col, Row } from 'antd'
-import { get, last, first, sumBy } from 'lodash'
+import { get, last, first, sumBy, round } from 'lodash'
 import { project } from '../../config'
 import { IconGreen, StatisticBlue } from './styled'
 
@@ -10,7 +10,7 @@ const Dashboard = ({ spinning, data }) => {
 
   const firstWeight = get(first(data), 'weight', 0)
   const currentWeight = get(last(data), 'weight', 0)
-  const lossWeight = currentWeight - firstWeight
+  const lossWeight = round(currentWeight - firstWeight, 2)
   const tagetLossWeight = firstWeight - project.goalWeight
   const goal = Math.abs(lossWeight) / tagetLossWeight * 100
   const ts7dAgo = moment().endOf('day').subtract(7, 'days').unix()
