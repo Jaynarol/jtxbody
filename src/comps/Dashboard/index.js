@@ -12,7 +12,7 @@ const Dashboard = ({ spinning, data }) => {
   const currentWeight = get(last(data), 'weight', 0)
   const lossWeight = round(currentWeight - firstWeight, 2)
   const tagetLossWeight = firstWeight - project.goalWeight
-  const goal = Math.abs(lossWeight) / tagetLossWeight * 100
+  const goal = (Math.abs(lossWeight) / tagetLossWeight * 100) * (lossWeight > 0 ? -1 : 1)
   const ts7dAgo = moment().endOf('day').subtract(7, 'days').unix()
   const last7dExercise = sumBy(data, ({ timestamp: ts, exercise: ex }) => ts > ts7dAgo ? ex : 0 )
   const lossWeightIcon = `caret-${lossWeight <= 0 ? 'down' : 'up'}`
@@ -35,7 +35,7 @@ const Dashboard = ({ spinning, data }) => {
       <Col span={6}>
         <Card loading={spinning} >
           <StatisticBlue
-            title="Weight Loss"
+            title="Weight Changed"
             value={lossWeight}
             precision={2}
             prefix={<IconGreen type={lossWeightIcon} />}
@@ -47,7 +47,7 @@ const Dashboard = ({ spinning, data }) => {
       <Col span={6}>
         <Card loading={spinning} >
           <StatisticBlue
-            title="Reach my Goal"
+            title="Reach the Goal"
             value={goal}
             precision={2}
             prefix={<IconGreen type="ant-design" />}

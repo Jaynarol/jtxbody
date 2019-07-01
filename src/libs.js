@@ -3,7 +3,7 @@ import { find, get, zipObject } from 'lodash'
 import { Modal } from 'antd'
 
 export const convertDate = date => (
-  moment(date, "YYYY-MM-DD")
+  moment(date, 'YYYY-MM-DD')
 )
 
 export const convertData = row => ({

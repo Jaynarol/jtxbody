@@ -28,6 +28,7 @@ const PanelDate = ({ selectDate, selectedDate, data }) => {
       fullscreen={false}
       value={selectedDate}
       onSelect={selectDate}
+      onChange={selectDate}
       dateCellRender={dateCellRender(data)}
     />
   )

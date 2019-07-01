@@ -11,9 +11,13 @@ export const AxisTickRotate = ({ x, y, payload }) => (
 )
 
 export const MeasureDot = ({ cx, cy, payload: { measure } }) => (
-  <circle
-    cx={cx} cy={cy} r={4} strokeWidth={1}
-    stroke={measure ? '#52c41a' : '#ff7300'}
-    fill={measure ? '#52c41a' : 'white'}
-  />
+  measure === null
+    ? null
+    : <circle
+      cx={cx} cy={cy}
+      strokeWidth={measure ? 1 : 1}
+      r={measure ? 4 : 2}
+      stroke={measure ? '#23540B' : 'cadetblue'}
+      fill={measure ? '#52c41a' : 'cadetblue'}
+    />
 )
