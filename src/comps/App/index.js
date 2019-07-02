@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import { Spin } from 'antd'
 import { fetchData, fetchTokenInfo } from '../../gapi'
+import { cleanAccessToken, getTokenExpiresAt } from '../../libs'
 import Layout from '../Layout'
 import '../../assets/style.css'
 
@@ -14,8 +15,13 @@ class App extends React.Component {
   }
 
   refetchAuth = async () => {
-    const { data: { expires_in = 0 } = {} }  = await fetchTokenInfo()
-    this.setState({ isLogin: expires_in > 0 })
+    const isTokenAlive = getTokenExpiresAt() > +moment()
+    if(isTokenAlive){
+      const { data: { expires_in = 0 } = {} }  = await fetchTokenInfo()
+      this.setState({ isLogin: expires_in > 0 })
+    }else{
+      cleanAccessToken()
+    }
   }
 
   refetchData = async () => {

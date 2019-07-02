@@ -25,6 +25,15 @@ export const getAccessToken = () => {
   return get(auth, 'tokenObj.access_token', '')
 }
 
+export const getTokenExpiresAt = () => {
+  const auth = JSON.parse(localStorage.getItem('auth'))
+  return get(auth, 'tokenObj.expires_at', 0)
+}
+
+export const cleanAccessToken = () => {
+  localStorage.removeItem('auth')
+}
+
 const returnOutput = silent => resp => {
   if (resp instanceof Error) {
     if(!silent){
