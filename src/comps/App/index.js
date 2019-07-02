@@ -3,7 +3,7 @@ import moment from 'moment'
 import { Spin } from 'antd'
 import { fetchData, fetchTokenInfo } from '../../gapi'
 import Layout from '../Layout'
-import './style.css'
+import '../../assets/style.css'
 
 class App extends React.Component {
   state = {

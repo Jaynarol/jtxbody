@@ -20,7 +20,7 @@ const Dashboard = ({ spinning, data }) => {
   return (
     <Row gutter={16}>
 
-      <Col span={6}>
+      <Col xs={12} md={6} >
         <Card loading={spinning} >
           <StatisticBlue
             title="Current Weight"
@@ -32,7 +32,7 @@ const Dashboard = ({ spinning, data }) => {
         </Card>
       </Col>
 
-      <Col span={6}>
+      <Col xs={12} md={6} >
         <Card loading={spinning} >
           <StatisticBlue
             title="Weight Changed"
@@ -44,7 +44,7 @@ const Dashboard = ({ spinning, data }) => {
         </Card>
       </Col>
 
-      <Col span={6}>
+      <Col xs={12} md={6} >
         <Card loading={spinning} >
           <StatisticBlue
             title="Reach the Goal"
@@ -56,7 +56,7 @@ const Dashboard = ({ spinning, data }) => {
         </Card>
       </Col>
 
-      <Col span={6}>
+      <Col xs={12} md={6} >
         <Card loading={spinning} >
           <StatisticBlue
             title="Last 7d Exercise"

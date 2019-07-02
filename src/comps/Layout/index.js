@@ -1,13 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button, Col, Layout as AntLayout, Row } from 'antd'
+import { Layout as AntLayout } from 'antd'
 import { omit } from 'lodash'
-import { Logo, MainContent, MainLayout, Panel, DividerTop, MainSider } from './styled'
+import { Logo, ContentStyled, LayoutStyled, Panel, DividerStyled, SiderStyled } from './styled'
 import PanelDate from '../PanelDate'
 import PanelWeight from '../PanelWeight'
 import Dashboard from '../Dashboard'
-import { gconf, project } from '../../config'
 import Graph from '../Graph'
+import { Footer } from './child'
+import { project } from '../../config'
 
 const Layout = props => {
   const { selectedDate, data } = props
@@ -15,31 +16,23 @@ const Layout = props => {
   const cleanData = data.filter(({ weight = 0 }) => weight > 0)
 
   return (
-    <MainLayout>
+    <LayoutStyled>
       <AntLayout>
-        <MainContent>
+        <ContentStyled>
           <Dashboard data={cleanData} {...propsWithoutData} />
           <Graph data={cleanData} {...propsWithoutData} />
-        </MainContent>
+        </ContentStyled>
+        <Footer />
       </AntLayout>
-      <MainSider>
-        <Logo>
-          <Row type="flex" justify="space-between" >
-            <Col span={16}>{project.projectName}</Col>
-            <Col span={8}>
-              <Button type="link" icon="file" href={`https://docs.google.com/spreadsheets/d/${gconf.sheetID}`} target="_blank" />
-              <Button type="link" icon="facebook" href={project.facebookLink} target="_blank" />
-              <Button type="link" icon="github" href={project.githubRepo} target="_blank" />
-            </Col>
-          </Row>
-        </Logo>
+      <SiderStyled>
+        <Logo>{project.projectName}</Logo>
         <Panel>
           <PanelDate {...props} />
-          <DividerTop>{selectedDate.format('DD MMMM YYYY')}</DividerTop>
+          <DividerStyled>{selectedDate.format('DD MMMM YYYY')}</DividerStyled>
           <PanelWeight {...props} />
         </Panel>
-      </MainSider>
-    </MainLayout>
+      </SiderStyled>
+    </LayoutStyled>
   )
 }
 
