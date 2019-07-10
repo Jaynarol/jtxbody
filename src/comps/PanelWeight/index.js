@@ -1,7 +1,7 @@
 /* eslint-disable newline-per-chained-call */
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import _, { each, capitalize, keys } from 'lodash'
+import _, { each, keys } from 'lodash'
 import { ColLabel, ColSlider, RowPanel, RowSave } from './styled'
 import { Col, InputNumber, Slider, Switch } from 'antd'
 import ButtonAuth from '../ButtonAuth'
@@ -18,6 +18,13 @@ const PanelWeight = props => {
     waist: useState(0),
     hip: useState(0),
     sleeve: useState(0)
+  }
+  const labels = {
+    neck: 'Neck',
+    chest: 'Chest',
+    waist: 'Belly',
+    hip: 'Hip',
+    sleeve: 'Sleeve'
   }
   const setValue = (label, bypass = false) => value => (isLogin || bypass) && form[label][1](value)
   const getValue = label => form[label][0]
@@ -80,7 +87,7 @@ const PanelWeight = props => {
         getValue('measure') &&
         ['neck', 'chest', 'waist', 'hip', 'sleeve'].map(v => (
           <RowPanel key={v}>
-            <ColLabel>{capitalize(v)}:</ColLabel>
+            <ColLabel>{labels[v]}:</ColLabel>
             <ColSlider>
               <Slider min={0} max={60} step={0.1} onChange={setValue(v)} value={getValue(v)}  />
             </ColSlider>
