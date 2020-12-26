@@ -1,11 +1,14 @@
+/* eslint-disable react/prop-types */
 import React from 'react'
 import moment from 'moment'
+import { Alert } from 'antd'
 import { CopyRight, LinkDev, StyledFooter } from './styled'
 import { gconf, project } from '../../config'
 
 import IconExcel from '../../assets/icons/icon-excel.png'
 import IconFacebook from '../../assets/icons/icon-fb.png'
 import IconGithub from '../../assets/icons/icon-github.png'
+import { IconGreen } from '../Dashboard/styled'
 
 
 export const Footer = () => {
@@ -26,4 +29,12 @@ export const Footer = () => {
     </StyledFooter>
   )
 }
+
+export const Encouragement = props => (
+  <Alert
+    message={props.encouragement || 'Loading...'}
+    showIcon type="info" icon={<IconGreen type='heart' />}
+    style={{ textAlign: 'center', marginBottom: 10 }}
+  />
+)
 
