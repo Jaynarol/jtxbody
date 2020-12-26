@@ -4,7 +4,9 @@ import { Spin } from 'antd'
 import { fetchData, fetchTokenInfo } from '../../gapi'
 import { cleanAccessToken, getTokenExpiresAt } from '../../libs'
 import Layout from '../Layout'
+import { encouragements } from '../../config'
 import '../../assets/style.css'
+import { sample } from 'lodash'
 
 class App extends React.Component {
   state = {
@@ -36,7 +38,10 @@ class App extends React.Component {
   componentDidMount = async () => {
     await this.refetchAuth()
     await this.refetchData()
-    this.setState({ spinning: false })
+    this.setState({
+      spinning: false,
+      encouragement: sample(encouragements)
+    })
   }
 
   render() {

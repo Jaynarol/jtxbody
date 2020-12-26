@@ -1,18 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Layout as AntLayout, Alert } from 'antd'
-import { omit, sample } from 'lodash'
+import { omit } from 'lodash'
 import { Logo, ContentStyled, LayoutStyled, Panel, DividerStyled, SiderStyled } from './styled'
 import PanelDate from '../PanelDate'
 import PanelWeight from '../PanelWeight'
 import Dashboard from '../Dashboard'
 import Graph from '../Graph'
 import { Footer } from './child'
-import { project, encouragements } from '../../config'
+import { project } from '../../config'
 import { IconGreen } from '../Dashboard/styled'
 
 const Layout = props => {
-  const { selectedDate, data } = props
+  const { selectedDate, data, encouragement } = props
   const propsWithoutData = omit(props, ['data'])
   const cleanData = data.filter(({ weight = 0 }) => weight > 0)
 
@@ -20,8 +20,10 @@ const Layout = props => {
     <LayoutStyled>
       <AntLayout>
         <ContentStyled>
-          <Alert message={sample(encouragements)} type="info" icon={<IconGreen type='heart' />} showIcon
-                 style={{ textAlign: 'center', marginBottom: 10 }}
+          <Alert
+            message={encouragement || 'Loading...'}
+            showIcon type="info" icon={<IconGreen type='heart' />}
+            style={{ textAlign: 'center', marginBottom: 10 }}
           />
           <Dashboard data={cleanData} {...propsWithoutData} />
           <Graph data={cleanData} {...propsWithoutData} />
@@ -42,7 +44,8 @@ const Layout = props => {
 
 Layout.propTypes = {
   data: PropTypes.arrayOf(PropTypes.any),
-  selectedDate: PropTypes.objectOf(PropTypes.any).isRequired
+  selectedDate: PropTypes.objectOf(PropTypes.any).isRequired,
+  encouragement: PropTypes.string.isRequired
 }
 
 Layout.defaultProps = {
