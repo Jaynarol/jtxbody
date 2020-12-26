@@ -1,14 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Layout as AntLayout } from 'antd'
-import { omit } from 'lodash'
+import { Layout as AntLayout, Alert } from 'antd'
+import { omit, sample } from 'lodash'
 import { Logo, ContentStyled, LayoutStyled, Panel, DividerStyled, SiderStyled } from './styled'
 import PanelDate from '../PanelDate'
 import PanelWeight from '../PanelWeight'
 import Dashboard from '../Dashboard'
 import Graph from '../Graph'
 import { Footer } from './child'
-import { project } from '../../config'
+import { project, encouragements } from '../../config'
+import { IconGreen } from '../Dashboard/styled'
 
 const Layout = props => {
   const { selectedDate, data } = props
@@ -19,6 +20,9 @@ const Layout = props => {
     <LayoutStyled>
       <AntLayout>
         <ContentStyled>
+          <Alert message={sample(encouragements)} type="info" icon={<IconGreen type='heart' />} showIcon
+                 style={{ textAlign: 'center', marginBottom: 10 }}
+          />
           <Dashboard data={cleanData} {...propsWithoutData} />
           <Graph data={cleanData} {...propsWithoutData} />
         </ContentStyled>

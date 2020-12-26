@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment'
 import { Card, Col, Row } from 'antd'
-import { get, last, first, sumBy, round } from 'lodash'
+import { get, last, first, round, floor } from 'lodash'
 import { project } from '../../config'
 import { IconGreen, StatisticBlue } from './styled'
 
@@ -13,9 +13,10 @@ const Dashboard = ({ spinning, data }) => {
   const lossWeight = round(currentWeight - firstWeight, 2)
   const tagetLossWeight = firstWeight - project.goalWeight
   const goal = (Math.abs(lossWeight) / tagetLossWeight * 100) * (lossWeight > 0 ? -1 : 1)
-  const ts7dAgo = moment().endOf('day').subtract(7, 'days').unix()
-  const last7dExercise = sumBy(data, ({ timestamp: ts, exercise: ex }) => ts > ts7dAgo ? ex : 0 )
+  // const ts7dAgo = moment().endOf('day').subtract(7, 'days').unix()
+  // const last7dExercise = sumBy(data, ({ timestamp: ts, exercise: ex }) => ts > ts7dAgo ? ex : 0 )
   const lossWeightIcon = `caret-${lossWeight <= 0 ? 'down' : 'up'}`
+  const daysPass = floor((moment().unix() - get(first(data), 'timestamp', 0)) / 86400)
 
   return (
     <Row gutter={16}>
@@ -59,10 +60,10 @@ const Dashboard = ({ spinning, data }) => {
       <Col xs={12} md={6} >
         <Card loading={spinning} >
           <StatisticBlue
-            title="Last 7d Exercise"
-            value={last7dExercise}
-            prefix={<IconGreen type="heart" />}
-            suffix=" mins"
+            title="Time Passes"
+            value={` ${daysPass}`}
+            prefix={<IconGreen type="clock-circle" />}
+            suffix=" days"
           />
         </Card>
       </Col>
