@@ -1,24 +1,30 @@
 import moment from 'moment'
-import { find, get, zipObject } from 'lodash'
+import { find, get, zipObject, round } from 'lodash'
 import { Modal } from 'antd'
 
 export const convertDate = date => (
   moment(date, 'YYYY-MM-DD')
 )
 
-export const convertData = row => ({
-  ...row,
-  timestamp: convertDate(row.date).unix(),
-  dmoment: convertDate(row.date),
-  weight: +(row.weight || 0),
-  exercise: +(row.exercise || 0),
-  measure: row.measure === "TRUE",
-  neck: +(row.neck || 0),
-  chest: +(row.chest || 0),
-  waist: +(row.waist || 0),
-  hip: +(row.hip || 0),
-  sleeve: +(row.sleeve || 0)
-})
+export const convertData = (row, index, data) => {
+  const weight = +(row.weight || 0)
+  const weightBefore = get(data, index-1, { weight }).weight
+
+  return {
+    ...row,
+    timestamp: convertDate(row.date).unix(),
+    dmoment: convertDate(row.date),
+    weight,
+    change: round(weight - weightBefore, 2),
+    exercise: +(row.exercise || 0),
+    measure: row.measure === "TRUE",
+    neck: +(row.neck || 0),
+    chest: +(row.chest || 0),
+    waist: +(row.waist || 0),
+    hip: +(row.hip || 0),
+    sleeve: +(row.sleeve || 0)
+  }
+}
 
 export const getAccessToken = () => {
   const auth = JSON.parse(localStorage.getItem('auth'))
