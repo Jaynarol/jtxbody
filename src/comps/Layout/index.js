@@ -12,7 +12,7 @@ import { Encouragement, Footer } from './child'
 import { project } from '../../config'
 
 const Layout = props => {
-  const { selectedDate, data } = props
+  const { selectedDate, data, photo } = props
   const [isShowPicture, setShowPicture] = useState(false)
   const propsWithoutData = omit(props, ['data'])
   const cleanData = data.filter(({ weight = 0 }) => weight > 0)
@@ -31,10 +31,10 @@ const Layout = props => {
         <Logo onClick={() => setShowPicture(!isShowPicture)} style={{ cursor: 'pointer' }}>{project.projectName}</Logo>
         <Panel>
           {
-            isShowPicture
+            isShowPicture && photo
               ? (
                 <>
-                  <img src="https://scontent.fbkk13-2.fna.fbcdn.net/v/t1.0-9/132428253_4949701428405862_4797352813996937605_n.jpg?_nc_cat=111&ccb=2&_nc_sid=730e14&_nc_eui2=AeFiCocOtW0BeWZbYZyur4V3GuFpPuzYbRsa4Wk-7NhtG60Go2_5kP4U566h8_W6Cvz8v328T4SqJ5N3rvxwubfV&_nc_ohc=ovSeWsH-d44AX9VjT7Q&_nc_ht=scontent.fbkk13-2.fna&oh=16549ea6d2d8110f763f9b8b559f7dee&oe=600B0227" alt="my goal" />
+                  <img src={photo} alt="my goal" />
                   <Alert style={{ textAlign: 'center' }} message="My Goal!" />
                 </>
               ) : (
@@ -54,11 +54,13 @@ const Layout = props => {
 
 Layout.propTypes = {
   data: PropTypes.arrayOf(PropTypes.any),
-  selectedDate: PropTypes.objectOf(PropTypes.any).isRequired
+  selectedDate: PropTypes.objectOf(PropTypes.any).isRequired,
+  photo: PropTypes.string
 }
 
 Layout.defaultProps = {
-  data: []
+  data: [],
+  photo: null
 }
 
 export default Layout

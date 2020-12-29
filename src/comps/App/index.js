@@ -1,10 +1,10 @@
+/* eslint-disable max-len */
 import React from 'react'
 import moment from 'moment'
 import { Spin } from 'antd'
-import { fetchData, fetchTokenInfo } from '../../gapi'
+import { fetchAnotherSheet, fetchData, fetchTokenInfo } from '../../gapi'
 import { cleanAccessToken, getTokenExpiresAt } from '../../libs'
 import Layout from '../Layout'
-import { encouragements } from '../../config'
 import '../../assets/style.css'
 import { sample } from 'lodash'
 
@@ -13,6 +13,7 @@ class App extends React.Component {
     spinning: true,
     isLogin: false,
     selectedDate: moment(),
+    photo: null,
     data: []
   }
 
@@ -28,7 +29,14 @@ class App extends React.Component {
 
   refetchData = async () => {
     const { data = [] } = await fetchData(this.state.isLogin)
-    this.setState({ data })
+    const encouragements = await fetchAnotherSheet(this.state.isLogin, 'encouragements')
+    const photos = await fetchAnotherSheet(this.state.isLogin, 'photos')
+
+    this.setState({
+      data ,
+      encouragement: `" ${sample(encouragements)} "`,
+      photo: sample(photos)
+    })
   }
 
   selectDate = date => {
@@ -39,8 +47,7 @@ class App extends React.Component {
     await this.refetchAuth()
     await this.refetchData()
     this.setState({
-      spinning: false,
-      encouragement: sample(encouragements)
+      spinning: false
     })
   }
 
